@@ -9,27 +9,31 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     console.log(msg.chat);
-    sendTodaysMenu(chatId);
+    getTodaysMenu().
+        then( (menu) => {
+            bot.sendMessage(chatId,menu);
+        }).
+        catch( (err) => {
+            bot.sendMessage("Error accured when getting menu from API");
+        });
 });
 
-const sendTodaysMenu = function (chatId) {
-    axios.get(MENU_API_URL).
-        then((res) => {
-            const data = res.data;
-            const dateText = `${data.date.day}/${data.date.month}/${data.date.year}`;
-            let lunchMenu = '';
-            let dinnerMenu = '';
-            data.lunch.forEach((lunchFood) => {
-                lunchMenu += lunchFood + "\n";
-            });
-            data.dinner.forEach( (dinnerFood) => {
-                dinnerMenu += dinnerFood + "\n";
-            });
-            bot.sendMessage(chatId, `${dateText}\n -------LUNCH--------\n${lunchMenu}\n----------DINNER-----------\n${dinnerMenu}`);
-            //console.log(data);
-        }).
-        catch((err) => {
-            console.log(err);
-            bot.sendMessage(chatId, 'Error accured when getting todays menu!');
-        });
+const getTodaysMenu = function () {
+    return new Promise((resolve, reject) => {
+        axios.get(MENU_API_URL).
+            then((res) => {
+                const data = res.data;
+                const dateText = `${data.date.day}/${data.date.month}/${data.date.year}`;
+                let lunchMenu = '';
+                let dinnerMenu = '';
+                data.lunch.forEach((lunchFood) => {
+                    lunchMenu += lunchFood + "\n";
+                });
+                data.dinner.forEach((dinnerFood) => {
+                    dinnerMenu += dinnerFood + "\n";
+                });
+                resolve(`${dateText}\n -------LUNCH--------\n${lunchMenu}\n----------DINNER-----------\n${dinnerMenu}`);
+            }).
+            catch(reject);
+    });
 }
