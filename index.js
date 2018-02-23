@@ -3,7 +3,7 @@ const CronJob = require('cron').CronJob;
 const TelegramBot = require('node-telegram-bot-api');
 const DataStore = require('nedb');
 
-const TOKEN = "";
+const TOKEN = process.env.TOKEN || '';
 const MENU_API_URL = 'https://ytuyemekhane-api.herokuapp.com/';
 const bot = new TelegramBot(TOKEN, { polling: true });
 
