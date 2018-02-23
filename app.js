@@ -1,19 +1,27 @@
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
+const DataStore = require('nedb');
 
 const TOKEN = "";
 const MENU_API_URL = 'https://ytuyemekhane-api.herokuapp.com/';
 
 const bot = new TelegramBot(TOKEN, { polling: true });
+const chatDb = new DataStore({ filename: 'db/app.db', autoload: true });
+
+chatDb.ensureIndex({
+    fieldName: 'id',
+    unique: true
+}, function(err) {});
 
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
+    chatDb.insert(msg.chat);
     console.log(msg.chat);
     getTodaysMenu().
-        then( (menu) => {
-            bot.sendMessage(chatId,menu);
+        then((menu) => {
+            bot.sendMessage(chatId, menu);
         }).
-        catch( (err) => {
+        catch((err) => {
             bot.sendMessage("Error accured when getting menu from API");
         });
 });
