@@ -9,6 +9,7 @@
   "author": "Emre Kul",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "node-telegram-bot-api": "^0.30.0"
   }
 }
