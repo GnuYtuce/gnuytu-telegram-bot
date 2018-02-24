@@ -14,16 +14,39 @@ chatDb.ensureIndex({
     unique: true
 }, function (err) { });
 
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/addMe/, (msg) => {
     chatDb.insert(msg.chat);
     bot.sendMessage(msg.chat.id, "I will send you notification!");
 });
 
-bot.onText(/\/clear/, (msg) => {
+bot.onText(/\/removeMe/, (msg) => {
     chatDb.remove({ id: msg.chat.id });
     bot.sendMessage(msg.chat.id, "I won't send you notification anymore!");
 });
 
+bot.onText(/\/help/, (msg) => {
+    bot.sendMessage(msg.chat.id,
+        "-----Commands-----\n" +
+        "\/help : Help :)\n" +
+        "\/addMe : Bot will add you to database.\n" +
+        "\/removeMe : Bot will remove you from database.\n" +
+        "\/myStatus : Bot will show you the notification status."
+    );
+});
+
+bot.onText(/\/myStatus/, (msg) => {
+    chatDb.findOne({ id: msg.chat.id }, (err, doc) => {
+        if (err) {
+            bot.sendMessage(msg.chat.id, `Error : ${err}`);
+        }
+        else {
+            if (doc == null)
+                bot.sendMessage(msg.chat.id, "No notification.");
+            else
+                bot.sendMessage(msg.chat.id, "Yes notification.");
+        }
+    });
+});
 const getTodaysMenu = function () {
     return new Promise((resolve, reject) => {
         axios.get(MENU_API_URL).
@@ -38,7 +61,7 @@ const getTodaysMenu = function () {
                 data.dinner.forEach((dinnerFood) => {
                     dinnerMenu += dinnerFood + "\n";
                 });
-                resolve(`${dateText}\n -------LUNCH--------\n${lunchMenu}\n----------DINNER-----------\n${dinnerMenu}`);
+                resolve(`${dateText}\n -----LUNCH-----\n${lunchMenu}\n-----DINNER-----\n${dinnerMenu}`);
             }).
             catch(reject);
     });
