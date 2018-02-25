@@ -1,26 +1,30 @@
 const axios = require('axios');
 const CronJob = require('cron').CronJob;
 const TelegramBot = require('node-telegram-bot-api');
-const DataStore = require('nedb');
+const mongoose = require('mongoose');
 
 const config = require('./config');
+mongoose.connect(config.MONGO_URL);
 
 const bot = new TelegramBot(config.TOKEN, { polling: true });
-const chatDb = new DataStore({ filename: config.NEDB_FILENAME, autoload: true });
-
-chatDb.ensureIndex({
-    fieldName: 'id',
-    unique: true
-}, function (err) { });
+const Chat = require('./models/chat.js');
 
 bot.onText(/\/addMe/, (msg) => {
-    chatDb.insert(msg.chat);
-    bot.sendMessage(msg.chat.id, "I will send you notification!");
+    const chat = new Chat(msg.chat);
+    chat.saveChat().then(() => {
+        bot.sendMessage(msg.chat.id, "I will send you notification!");
+    }).catch( (err) => {
+        if(err.code == 11000)
+            bot.sendMessage(msg.chat.id, "I already add you to database!");        
+        console.log(err.code);
+    });
 });
 
 bot.onText(/\/removeMe/, (msg) => {
-    chatDb.remove({ id: msg.chat.id });
-    bot.sendMessage(msg.chat.id, "I won't send you notification anymore!");
+    Chat.removeChat(msg.chat.id).then(() => {
+        bot.sendMessage(msg.chat.id, "I won't send you notification anymore!");
+    });
+
 });
 
 bot.onText(/\/help/, (msg) => {
@@ -34,18 +38,18 @@ bot.onText(/\/help/, (msg) => {
 });
 
 bot.onText(/\/myStatus/, (msg) => {
-    chatDb.findOne({ id: msg.chat.id }, (err, doc) => {
-        if (err) {
-            bot.sendMessage(msg.chat.id, `Error : ${err}`);
-        }
-        else {
+    Chat.getChat(msg.chat.id).
+        then((doc) => {
             if (doc == null)
                 bot.sendMessage(msg.chat.id, "No notification.");
             else
                 bot.sendMessage(msg.chat.id, "Yes notification.");
-        }
-    });
+        }).
+        catch((err) => {
+            bot.sendMessage(msg.chat.id, `Error : ${err}`);
+        });
 });
+
 const getTodaysMenu = function () {
     return new Promise((resolve, reject) => {
         axios.get(config.MENU_API_URL).
