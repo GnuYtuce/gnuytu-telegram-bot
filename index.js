@@ -33,7 +33,9 @@ bot.onText(/\/help/, (msg) => {
         "\/help : Help :)\n" +
         "\/addMe : Bot will add you to database.\n" +
         "\/removeMe : Bot will remove you from database.\n" +
-        "\/myStatus : Bot will show you the notification status."
+        "\/myStatus : Bot will show you the notification status."+
+        "Repo\n"+
+        "https://github.com/Emre-Kul/ytu-telegram-bot"
     );
 });
 
