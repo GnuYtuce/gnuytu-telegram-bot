@@ -71,7 +71,7 @@ bot.onText(/\/text/, (msg, match) => {
         Text.getTexts().
             then((txts) => {
                 let txtNames = '-----TEXTS-----\n';
-                txts.forEach(function (txt) {
+                txts.forEach((txt) => {
                     txtNames += `*** ${txt.name}\n`;
                 });
                 bot.sendMessage(msg.chat.id, txtNames);
