@@ -4,13 +4,13 @@ module.exports = {
         MENU_API_URL: 'https://ytuyemekhane-api.herokuapp.com/',
         MONGO_URL: process.env.MONGO_URL || ''
     },
-    MSG : {
-        ADDED : "I will send you notification!",
+    MSG: {
+        ADDED: "I will send you notification!",
         ADDED_ALREADY: "I already added you to the database!",
-        REMOVED : "I won't send you notification anymore!",
-        STATUS_ON : "Notification is ON!",
-        STATUS_OFF : "Notification is OFF!",
+        REMOVED: "I won't send you notification anymore!",
+        STATUS_ON: "Notification is ON!",
+        STATUS_OFF: "Notification is OFF!",
         TEXT_INVALID: "Invalid text name!",
-        TEXT_EMPTY : "There is no Text!"
+        TEXT_EMPTY: "There is no Text!"
     }
 }
