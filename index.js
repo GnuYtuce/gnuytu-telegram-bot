@@ -35,7 +35,7 @@ bot.onText(/\/help/, (msg) => {
         "\/removeMe : Bot will remove you from database.\n" +
         "\/myStatus : Bot will show you the notification status."+
         "Repo\n"+
-        "https://github.com/Emre-Kul/ytu-telegram-bot"
+        "https://github.com/GnuYtuce/gnuytu-telegram-bot"
     );
 });
 
@@ -75,7 +75,7 @@ const getTodaysMenu = function () {
 const sendTodaysMenuToUsers = function () {
     getTodaysMenu().
         then((menu) => {
-            chat.find({}, function (err, docs) {
+            Chat.find({}, function (err, docs) {
                 if (err)
                     return;
                 docs.forEach((doc) => {
