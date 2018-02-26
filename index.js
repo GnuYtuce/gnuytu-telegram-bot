@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const config = require('./config');
 const Chat = require('./models/chat.js');
+const Text = require('./models/text.js');
 const MenuHelper = require('./helpers/ytu_menu_helper.js');
 
 
@@ -51,6 +52,40 @@ bot.onText(/\/myStatus/, (msg) => {
         catch((err) => {
             bot.sendMessage(msg.chat.id, `Error : ${err}`);
         });
+    
+    //TEST 
+    let text = new Text({
+        name : "emre",
+        title: "emre",
+        content : "cnt"
+    });
+    text.saveText();
+});
+
+bot.onText(/\/text/, (msg, match) => {
+    let textParam = match.input.split(' ')[1];
+    if (typeof textParam != "undefined") {
+        Text.getTextByName(textParam).
+            then((txt) => {
+                bot.sendMessage(msg.chat.id, `${txt.title}\n${txt.content}`);
+            }).
+            catch((err) => {
+                bot.sendMessage(msg.chat.id, config.MSG.TEXT_INVALID);
+            });
+    }
+    else {
+        Text.getTexts().
+            then((txts) => {
+                let txtNames = '-----TEXTS-----\n';
+                txts.forEach(function (txt) {
+                    txtNames += `${txt.name}\n`;
+                });
+                bot.sendMessage(msg.chat.id,txtNames);
+            }).
+            catch((err) => {
+                bot.sendMessage(msg.chat.id, config.MSG.TEXT_EMPTY);
+            });
+    }
 });
 
 new CronJob('00 00 00 * * 1-5', function () {

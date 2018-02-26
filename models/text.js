@@ -21,7 +21,14 @@ textSchema.statics = {
     },
     getTextByName: function (name) {
         return this.findOne({ name: name }).exec();
+    },
+    getTexts : function(){
+        return this.find().exec();
     }
 }
-
+textSchema.methods = {
+    saveText : function(){
+        return this.save().exec();
+    }
+}
 module.exports = mongoose.model('Text', textSchema);

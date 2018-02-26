@@ -9,6 +9,8 @@ module.exports = {
         ADDED_ALREADY: "I already added you to the database!",
         REMOVED : "I won't send you notification anymore!",
         STATUS_ON : "Notification is ON!",
-        STATUS_OFF : "Notification is OFF!"
+        STATUS_OFF : "Notification is OFF!",
+        TEXT_INVALID: "Invalid text name!",
+        TEXT_EMPTY : "There is no Text!"
     }
 }
