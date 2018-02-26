@@ -26,7 +26,6 @@ bot.onText(/\/removeMe/, (msg) => {
     Chat.removeChat(msg.chat.id).then(() => {
         bot.sendMessage(msg.chat.id, config.MSG.REMOVED);
     });
-
 });
 
 bot.onText(/\/help/, (msg) => {
