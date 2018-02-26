@@ -7,24 +7,24 @@ const Chat = require('./models/chat.js');
 const MenuHelper = require('./helpers/ytu_menu_helper.js');
 
 
-const bot = new TelegramBot(config.TOKEN, { polling: true });
+const bot = new TelegramBot(config.APP.TOKEN, { polling: true });
 
-mongoose.connect(config.MONGO_URL);
+mongoose.connect(config.APP.MONGO_URL);
 
 bot.onText(/\/addMe/, (msg) => {
     const chat = new Chat(msg.chat);
     chat.saveChat().then(() => {
-        bot.sendMessage(msg.chat.id, "I will send you notification!");
+        bot.sendMessage(msg.chat.id, config.MSG.ADDED);
     }).catch((err) => {
         if (err.code == 11000)
-            bot.sendMessage(msg.chat.id, "I already add you to database!");
+            bot.sendMessage(msg.chat.id, config.MSG.ADDED_ALREADY);
         console.log(err.code);
     });
 });
 
 bot.onText(/\/removeMe/, (msg) => {
     Chat.removeChat(msg.chat.id).then(() => {
-        bot.sendMessage(msg.chat.id, "I won't send you notification anymore!");
+        bot.sendMessage(msg.chat.id, config.MSG.REMOVED);
     });
 
 });
@@ -45,9 +45,9 @@ bot.onText(/\/myStatus/, (msg) => {
     Chat.getChat(msg.chat.id).
         then((doc) => {
             if (doc == null)
-                bot.sendMessage(msg.chat.id, "No notification.");
+                bot.sendMessage(msg.chat.id, config.MSG.STATUS_OFF);
             else
-                bot.sendMessage(msg.chat.id, "Yes notification.");
+                bot.sendMessage(msg.chat.id, config.MSG.STATUS_ON);
         }).
         catch((err) => {
             bot.sendMessage(msg.chat.id, `Error : ${err}`);

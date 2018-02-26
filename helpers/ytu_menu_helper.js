@@ -4,7 +4,7 @@ const config = require('../config.js');
 
 const getTodaysMenu = function () {
     return new Promise((resolve, reject) => {
-        axios.get(config.MENU_API_URL).
+        axios.get(config.APP.MENU_API_URL).
             then((res) => {
                 const data = res.data;
                 const dateText = `${data.date.day}/${data.date.month}/${data.date.year}`;
