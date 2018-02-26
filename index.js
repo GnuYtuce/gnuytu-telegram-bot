@@ -75,7 +75,7 @@ const getTodaysMenu = function () {
 const sendTodaysMenuToUsers = function () {
     getTodaysMenu().
         then((menu) => {
-            chatDb.find({}, function (err, docs) {
+            chat.find({}, function (err, docs) {
                 if (err)
                     return;
                 docs.forEach((doc) => {
@@ -88,7 +88,7 @@ const sendTodaysMenuToUsers = function () {
         });
 }
 
-new CronJob('00 00 01 * * 1-5', function () {
+new CronJob('00 00 00 * * 1-5', function () {
     console.log("Sended");
     sendTodaysMenuToUsers();
 }, null, true, 'America/Los_Angeles');
