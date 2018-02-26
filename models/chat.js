@@ -17,6 +17,9 @@ const chatSchema = new Schema({
 }, { collection: 'Chat', versionKey: false });
 
 chatSchema.statics = {
+    getChats: function(){
+        return this.find().exec();
+    },
     getChat: function (id) {
         return this.findOne({ id: id }).exec();
     },
