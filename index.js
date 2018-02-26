@@ -36,6 +36,8 @@ bot.onText(/\/help/, (msg) => {
         "\/addMe : Bot will add you to the database.\n" +
         "\/removeMe : Bot will remove you from the database.\n" +
         "\/myStatus : Bot will show you the notification status.\n" +
+        "\/text : Bot will list the saved Texts.\n" +
+        "> \/text [text_name]: Bot will show content of the text.\n" +
         "-----Repo-----\n" +
         "https://github.com/GnuYtuce/gnuytu-telegram-bot"
     );
@@ -52,14 +54,6 @@ bot.onText(/\/myStatus/, (msg) => {
         catch((err) => {
             bot.sendMessage(msg.chat.id, `Error : ${err}`);
         });
-    
-    //TEST 
-    let text = new Text({
-        name : "emre",
-        title: "emre",
-        content : "cnt"
-    });
-    text.saveText();
 });
 
 bot.onText(/\/text/, (msg, match) => {
@@ -80,7 +74,7 @@ bot.onText(/\/text/, (msg, match) => {
                 txts.forEach(function (txt) {
                     txtNames += `*** ${txt.name}\n`;
                 });
-                bot.sendMessage(msg.chat.id,txtNames);
+                bot.sendMessage(msg.chat.id, txtNames);
             }).
             catch((err) => {
                 bot.sendMessage(msg.chat.id, config.MSG.TEXT_EMPTY);
