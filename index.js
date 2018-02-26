@@ -32,8 +32,8 @@ bot.onText(/\/help/, (msg) => {
     bot.sendMessage(msg.chat.id,
         "-----Commands-----\n" +
         "\/help : Help :)\n" +
-        "\/addMe : Bot will add you to database.\n" +
-        "\/removeMe : Bot will remove you from database.\n" +
+        "\/addMe : Bot will add you to the database.\n" +
+        "\/removeMe : Bot will remove you from the database.\n" +
         "\/myStatus : Bot will show you the notification status.\n" +
         "-----Repo-----\n" +
         "https://github.com/GnuYtuce/gnuytu-telegram-bot"

@@ -6,7 +6,7 @@ module.exports = {
     },
     MSG : {
         ADDED : "I will send you notification!",
-        ADDED_ALREADY: "I already add you to database!",
+        ADDED_ALREADY: "I already added you to the database!",
         REMOVED : "I won't send you notification anymore!",
         STATUS_ON : "Notification is ON!",
         STATUS_OFF : "Notification is OFF!"
