@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const mongoose = require('mongoose');
 
-const config = require('./config');
+const config = require('../config');
 const Chat = require('./models/chat.js');
 const Text = require('./models/text.js');
 

@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const config = require('../config.js');
+const config = require('../../config.js');
 
 const getTodaysMenu = function () {
     return new Promise((resolve, reject) => {
@@ -35,6 +35,6 @@ const sendMenuToChats = function (bot, chats) {
 }
 
 module.exports = {
-    sendMenuToChats : sendMenuToChats,
-    getTodaysMenu : getTodaysMenu
+    sendMenuToChats: sendMenuToChats,
+    getTodaysMenu: getTodaysMenu
 }
